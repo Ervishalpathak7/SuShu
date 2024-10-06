@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Loader2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button } from "./ui/button.jsx"
 
 export default function MaintenancePage() {
   const [currentDate, setCurrentDate] = useState("")
