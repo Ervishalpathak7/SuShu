@@ -1,12 +1,10 @@
+import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom'
+import MaintenancePage from './Components/maintenance-page'
 
-import './App.css'
-
-function App() {
- 
-
-  return (
-    <h1>First project </h1>
+const Router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="*" element={<MaintenancePage />} />
   )
-}
+)
 
-export default App
+export default Router
