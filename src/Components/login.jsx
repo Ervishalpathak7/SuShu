@@ -1,9 +1,9 @@
 
 import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from "./ui/button"
+import { Input } from "./ui/input"
+import { Label } from "./ui/label"
+import { Checkbox } from "./ui/checkbox"
 import { MessageCircle, Github, Twitter } from "lucide-react"
 import { Link } from 'react-router-dom'
 

@@ -1,5 +1,5 @@
 
-import { Button } from "@/components/ui/button"
+import { Button } from "./ui/button"
 import { MessageCircle, Lock, Zap, Menu } from "lucide-react"
 import { Link } from "react-router-dom";
 

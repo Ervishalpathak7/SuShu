@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect, useMemo } from 'react';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "./ui/button.jsx";
+import { Input } from "./ui/input";
+import { ScrollArea } from "./ui/scroll-area";
 import { MessageCircle, User, Search, Menu, Settings, Send } from "lucide-react";
 
 const messages = [
