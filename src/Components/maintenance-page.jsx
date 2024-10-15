@@ -6,8 +6,13 @@ export default function MaintenancePage() {
   const [currentDate, setCurrentDate] = useState("")
 
   useEffect(() => {
+    fetch(`${process.env.VITE_BACKEND_URL}`,  {
+      method: "GET",
+    })
     setCurrentDate(new Date().toLocaleDateString())
   }, [])
+
+
 
   return (
     <div className="flex flex-col items-center justify-between min-h-screen bg-black text-white">

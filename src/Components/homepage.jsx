@@ -3,6 +3,16 @@ import { Button } from "./ui/button"
 import { MessageCircle, Lock, Zap, Menu } from "lucide-react"
 import { Link } from "react-router-dom";
 
+function testingapi(){
+  fetch(`${import.meta.env.VITE_BACKEND_URL}`, {
+    method: "GET",
+  })
+  .then(response => response.json())
+  .then(data => console.log(data));
+}
+
+testingapi();
+
 export function Homepage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
