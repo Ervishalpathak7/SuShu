@@ -5,38 +5,47 @@ import { Input } from './ui/input';
 import axios from 'axios';
 import { useState } from 'react';
 
-
 export default function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  
 
   // Login handler
-  const Loginhandler = async (data) => {
+  const loginHandler = async (data) => {
     setLoading(true);
-    setErrorMessage('');
+    setErrorMessage(''); // Reset error message
+
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/login`, data);
-      
-      // Assuming the response contains a token and user data
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/login`, {
+        email: data.email, // Get email from form data
+        password: data.password // Get password from form data
+      });
+
+      // Handle successful login
       const { token, user } = response.data;
-  
       // Store the token in local storage
       localStorage.setItem('token', token);
-
-      // Optionally, set the user in a state management solution
-      console.log('Login successful:', user);
-      
       // Redirect to the dashboard
-      navigate('/dashboard'); // Replace with your desired route
-    } 
-    catch (error) {
-      console.error(error);
-      setErrorMessage(error.response?.data?.message || 'Login failed. Please try again.');
-    } 
-    finally {
+      navigate('/dashboard');
+      
+    } catch (error) {
+      if (error.response) {
+        // Handle the case where the response is received but it's an error
+        const message = error.response.data.message;
+
+        if (message === 'User not verified. Please verify your email.') {
+          // Redirect to verification page if not verified
+          navigate('/verify');
+        } else {
+          setErrorMessage(message);
+        }
+      } else {
+        // Handle network errors or unexpected errors
+        console.error('Login error:', error);
+        setErrorMessage('Error logging in. Please try again.');
+      }
+    } finally {
       setLoading(false);
     }
   };
@@ -55,7 +64,7 @@ export default function Login() {
           </p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(Loginhandler)}>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(loginHandler)}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="email-address" className="sr-only">
@@ -64,9 +73,12 @@ export default function Login() {
               <Input
                 id="email-address"
                 type="email"
-                {...register('email', { 
-                  required: 'Email is required', 
-                  pattern: { value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: 'Invalid email address' } 
+                {...register('email', {
+                  required: 'Email is required',
+                  pattern: {
+                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                    message: 'Invalid email address',
+                  },
                 })}
                 className="rounded-t-md w-full p-2 border"
                 placeholder="Email address"
@@ -81,7 +93,10 @@ export default function Login() {
               <Input
                 id="password"
                 type="password"
-                {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Password must be at least 6 characters' } })}
+                {...register('password', {
+                  required: 'Password is required',
+                  minLength: { value: 6, message: 'Password must be at least 6 characters' },
+                })}
                 className="rounded-b-md w-full p-2 border"
                 placeholder="Password"
               />
@@ -107,7 +122,11 @@ export default function Login() {
           </div>
 
           <div>
-            <button type="submit" className={`w-full ${loading ? 'bg-gray-500' : 'bg-black hover:bg-gray-800'} text-white py-2`} disabled={loading}>
+            <button
+              type="submit"
+              className={`w-full ${loading ? 'bg-gray-500' : 'bg-black hover:bg-gray-800'} text-white py-2`}
+              disabled={loading}
+            >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
