@@ -13,7 +13,7 @@ function testingapi(){
 
 testingapi();
 
-export function Homepage() {
+export default function Homepage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <header className="flex items-center justify-between p-4 border-b">

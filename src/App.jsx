@@ -1,9 +1,13 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom'
-import MaintenancePage from './Components/maintenance-page'
-import { Homepage } from './Components/homepage'
-import { Login } from './Components/login'
-import { Signup } from './Components/signup'
-import MainPage from './Components/main-page'
+import Homepage from './Components/Home'
+import Login from './Components/login'
+import Signup from './Components/signup'
+import Dashboard from './Components/Dashboard'
+import Maintenance from './Components/Maintenance'
+
+
+
+
 
 const Router = createBrowserRouter(
   createRoutesFromElements(
@@ -12,8 +16,8 @@ const Router = createBrowserRouter(
       <Route path="/" element={<Homepage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/main" element={<MainPage />} />
-      <Route path="*" element={<MaintenancePage />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="*" element={<Maintenance />} />
     </>
 
   )

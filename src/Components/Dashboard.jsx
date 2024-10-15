@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect, useMemo } from 'react';
 import { Button } from "./ui/button.jsx";
-import { Input } from "./ui/input";
-import { ScrollArea } from "./ui/scroll-area";
+import { Input } from "./ui/input.jsx";
+import { ScrollArea } from "./ui/scroll-area.jsx";
 import { MessageCircle, User, Search, Menu, Settings, Send } from "lucide-react";
 
 const messages = [
@@ -62,7 +62,7 @@ const profileOptions = [
   { id: 3, name: "Help & Support", icon: <MessageCircle size={18} /> },
 ];
 
-export default function MainPageComponent() {
+export default function Dashboard() {
   const [menuOpen, setMenuOpen] = useState(true);
   const [selectedOption, setSelectedOption] = useState('messages');
   const [selectedItemId, setSelectedItemId] = useState(null);

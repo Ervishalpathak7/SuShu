@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { Loader2 } from "lucide-react"
 import { Button } from "./ui/button.jsx"
 
-export default function MaintenancePage() {
+export default function Maintenance() {
   const [currentDate, setCurrentDate] = useState("")
 
   useEffect(() => {
