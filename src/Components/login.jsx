@@ -22,10 +22,15 @@ export default function Login() {
         password: data.password // Get password from form data
       });
 
+      if(response.status == 403) {
+        // save the email to session storage
+        sessionStorage.setItem('userEmail', data.email);
+        // Redirect to verification page
+        navigate('/verify');
+      }
+
       // Handle successful login
       const { token, user } = response.data;
-      // Store the token in local storage
-      localStorage.setItem('token', token);
       // Redirect to the dashboard
       navigate('/dashboard');
       
@@ -33,13 +38,8 @@ export default function Login() {
       if (error.response) {
         // Handle the case where the response is received but it's an error
         const message = error.response.data.message;
+        setErrorMessage(message);
 
-        if (message === 'User not verified. Please verify your email.') {
-          // Redirect to verification page if not verified
-          navigate('/verify');
-        } else {
-          setErrorMessage(message);
-        }
       } else {
         // Handle network errors or unexpected errors
         console.error('Login error:', error);
