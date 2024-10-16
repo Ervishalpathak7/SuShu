@@ -1,4 +1,4 @@
-'use client';
+
 import { useState, useEffect, useMemo } from 'react';
 import { Button } from "./ui/button.jsx";
 import { Input } from "./ui/input.jsx";
@@ -70,7 +70,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (selectedOption === 'profile') {
-      setSelectedItemId(1); // Set "Edit Profile" as default
+      setSelectedItemId(1); 
     }
   }, [selectedOption]);
 
