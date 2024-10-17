@@ -2,49 +2,38 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { MessageCircle, Github, Twitter } from 'lucide-react';
 import { Input } from './ui/input';
-import axios from 'axios';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux'; // Import useDispatch
+import { login as loginThunk } from '../Redux-Toolkit/Thunks'; // Import the login thunk
+import { toast } from 'react-toastify'; // Optional: for better error notifications
 
 export default function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
+  const dispatch = useDispatch(); // Initialize useDispatch
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-
+  
   // Login handler
   const loginHandler = async (data) => {
     setLoading(true);
-    setErrorMessage(''); // Reset error message
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/login`, {
-        email: data.email, // Get email from form data
-        password: data.password // Get password from form data
-      });
+      const resultAction = await dispatch(loginThunk(data)); // Dispatch the login thunk
+      const { payload, error } = resultAction;
 
-      if(response.status == 403) {
-        // save the email to session storage
-        sessionStorage.setItem('userEmail', data.email);
-        // Redirect to verification page
-        navigate('/verify');
+      if (error) {
+        // Handle error if login fails
+        toast.error(error.message || "Login failed. Please try again."); // Optional: using toast for notifications
+        return;
       }
 
-      // Handle successful login
-      const { token, user } = response.data;
-      // Redirect to the dashboard
-      navigate('/dashboard');
-      
+      // If successful, handle success (you might want to store user info)
+      sessionStorage.setItem('userEmail', data.email); // Store email if needed
+      navigate('/dashboard'); // Redirect to the dashboard after successful login
+
     } catch (error) {
-      if (error.response) {
-        // Handle the case where the response is received but it's an error
-        const message = error.response.data.message;
-        setErrorMessage(message);
-
-      } else {
-        // Handle network errors or unexpected errors
-        console.error('Login error:', error);
-        setErrorMessage('Error logging in. Please try again.');
-      }
+      console.error('Login error:', error);
+      toast.error('Error logging in. Please try again.'); // Optional: show an error message
     } finally {
       setLoading(false);
     }
@@ -67,9 +56,7 @@ export default function Login() {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(loginHandler)}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="email-address" className="sr-only">
-                Email address
-              </label>
+              <label htmlFor="email-address" className="sr-only">Email address</label>
               <Input
                 id="email-address"
                 type="email"
@@ -87,9 +74,7 @@ export default function Login() {
             </div>
 
             <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
+              <label htmlFor="password" className="sr-only">Password</label>
               <Input
                 id="password"
                 type="password"
@@ -104,20 +89,14 @@ export default function Login() {
             </div>
           </div>
 
-          {errorMessage && <div className="text-red-500 text-sm">{errorMessage}</div>}
-
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Input type="checkbox" id="remember-me" {...register('rememberMe')} className="h-4 w-4" />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                Remember me
-              </label>
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">Remember me</label>
             </div>
 
             <div className="text-sm">
-              <Link to="/" className="font-medium text-black hover:text-gray-800">
-                Forgot your password?
-              </Link>
+              <Link to="/" className="font-medium text-black hover:text-gray-800">Forgot your password?</Link>
             </div>
           </div>
 
@@ -144,12 +123,10 @@ export default function Login() {
 
           <div className="mt-6 grid grid-cols-2 gap-3">
             <button type="button" className="w-full border flex justify-center items-center py-2">
-              <Github className="h-5 w-5 mr-2" />
-              GitHub
+              <Github className="h-5 w-5 mr-2" /> GitHub
             </button>
             <button type="button" className="w-full border flex justify-center items-center py-2">
-              <Twitter className="h-5 w-5 mr-2" />
-              Twitter
+              <Twitter className="h-5 w-5 mr-2" /> Twitter
             </button>
           </div>
         </div>

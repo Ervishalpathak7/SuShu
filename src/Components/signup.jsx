@@ -4,8 +4,9 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { MessageCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux"; // Import Redux hooks
+import { register as registerThunk } from "../Redux-Toolkit/Thunks"; // Import your register thunk
 import { Github, Twitter } from "lucide-react";
 
 export default function Signup() {
@@ -16,41 +17,26 @@ export default function Signup() {
     reset,
     setFocus,
   } = useForm();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  
+ 
+  const { loading, error } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    setFocus("name"); // Set focus to the first input field on mount
+    setFocus("name");
   }, [setFocus]);
 
-  const onSubmit = async (data) => {
-    setLoading(true);
-    setError("");
-
-    try {
-      // Send registration data to backend
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/register`, data);
-      if (response.status === 201) {
-        // Store email in sessionStorage after successful signup
+  const onSubmit = (data) => {
+    dispatch(registerThunk(data)).then((action) => {
+      if (action.type === "Auth/register/fulfilled") {
         sessionStorage.setItem('userEmail', data.email);
-
-        // Navigate to OTP verification page
         navigate("/verify");
-        reset(); // Reset form on successful signup
+        reset(); 
       }
-    } catch (err) {
-      // Improved error handling
-      if (err.response && err.response.data) {
-        setError(err.response.data.message || "Sign-up failed. Please try again.");
-      } else {
-        setError("Network error. Please check your connection.");
-      }
-    } finally {
-      setLoading(false);
-    }
+    });
   };
-
 
   const renderError = (field) => (
     errors[field] && (

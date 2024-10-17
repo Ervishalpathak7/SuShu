@@ -1,28 +1,66 @@
-import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom'
-import Homepage from './Components/Home'
-import Login from './Components/login'
-import Signup from './Components/signup'
-import Dashboard from './Components/Dashboard'
-import Maintenance from './Components/Maintenance'
-import Verification from './Components/Verification'
+import React, { useEffect } from "react";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import store  from "./Redux-Toolkit/Store.js"; // Adjust as necessary
+import { authStatus } from "./Redux-Toolkit/Thunks"; // Adjust the path as needed
+import Homepage from "./Components/Home";
+import Login from "./Components/Login";
+import Signup from "./Components/Signup";
+import Dashboard from "./Components/Dashboard";
+import Maintenance from "./Components/Maintenance";
+import Verification from "./Components/Verification";
+import { SocketProvider } from "./Context/SocketProvider";
+import { Navigate } from "react-router-dom";
 
 
 
+const App = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(authStatus());
+  }, [dispatch]);
+  return <RouterProvider router={router} />;
+};
 
 
-const Router = createBrowserRouter(
-  createRoutesFromElements(
 
-    <>
-      <Route path="/" element={<Homepage />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/verify" element={<Verification />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="*" element={<Maintenance />} />
-    </>
+// ProtectedRoute Component
+const ProtectedRoute = ({ children }) => {
+  const user = useSelector((state) => state.auth);
+ 
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+  return children;
+};
 
-  )
-)
+// Router Setup
+const router = createBrowserRouter([
+  { path: '/', element: <Homepage /> },
+  { path: '/login', element: <Login /> },
+  { path: '/signup', element: <Signup /> },
+  { path: '/verify', element: <Verification /> },
+  {
+    path: '/dashboard',
+    element: (
+      <ProtectedRoute>
+        <SocketProvider>
+          <Dashboard />
+        </SocketProvider>
+      </ProtectedRoute>
+    ),
+  },
+  { path: '*', element: <Maintenance /> },
+]);
 
-export default Router
+// App Component
+
+// Main entry point of the application
+const Main = () => (
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+
+
+export default Main;

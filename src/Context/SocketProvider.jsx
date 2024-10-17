@@ -13,9 +13,9 @@ export const SocketProvider = ({ children }) => {
 
     // Listen for the connect event
     newSocket.on('connect', () => {
-      console.log('Connected to server');
-      console.log('Socket ID:', newSocket.id); // Log the socket ID
-      console.log('Connected status:', newSocket.connected); // Should print true
+      // console.log('Connected to server');
+      // console.log('Socket ID:', newSocket.id); // Log the socket ID
+      // console.log('Connected status:', newSocket.connected); // Should print true
       newSocket.emit('join', 'Vishal');
     });
 
