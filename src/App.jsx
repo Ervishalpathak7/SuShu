@@ -2,15 +2,19 @@ import React, { useEffect } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import store  from "./Redux-Toolkit/Store.js"; // Adjust as necessary
-import { authStatus } from "./Redux-Toolkit/Thunks"; // Adjust the path as needed
-import Homepage from "./Components/home.jsx";
-import Login from "./Components/login.jsx";
-import Signup from "./Components/signup.jsx";
-import Dashboard from "./Components/dashboard.jsx";
-import Maintenance from "./Components/Maintenance";
-import Verification from "./Components/verification.jsx";
-import { SocketProvider } from "./Context/SocketProvider";
 import { Navigate } from "react-router-dom";
+import { authStatus } from "./Redux-Toolkit/Thunks"; // Adjust the path as needed
+import { SocketProvider } from "./Context/SocketProvider";
+
+
+
+
+import Homepage from './Components/Home'
+import Login from './Components/Login'
+import Signup from './Components/SignUp'
+import Dashboard from './Components/Dashboard'
+import Maintenance from './Components/Maintenance'
+import Verification from './Components/Verification'
 
 
 
