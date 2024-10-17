@@ -3,12 +3,12 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import store  from "./Redux-Toolkit/Store.js"; // Adjust as necessary
 import { authStatus } from "./Redux-Toolkit/Thunks"; // Adjust the path as needed
-import Homepage from "./Components/Home.jsx";
-import Login from "./Components/Login.jsx";
-import Signup from "./Components/SignUp.jsx";
-import Dashboard from "./Components/Dashboard.jsx";
+import Homepage from "./Components/home.jsx";
+import Login from "./Components/login.jsx";
+import Signup from "./Components/signup.jsx";
+import Dashboard from "./Components/dashboard.jsx";
 import Maintenance from "./Components/Maintenance";
-import Verification from "./Components/Verification";
+import Verification from "./Components/verification.jsx";
 import { SocketProvider } from "./Context/SocketProvider";
 import { Navigate } from "react-router-dom";
 
