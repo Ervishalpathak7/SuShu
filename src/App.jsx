@@ -6,17 +6,15 @@ import { Navigate } from "react-router-dom";
 import { authStatus } from "./Redux-Toolkit/Thunks"; // Adjust the path as needed
 import { SocketProvider } from "./Context/SocketProvider";
 
-
-
-
+// Import components
 import Homepage from './Components/Home'
-import Login from './Components/Login'
-import Signup from './Components/SignUp'
-import Dashboard from './Components/Dashboard'
+import Login from './Components/login'
+import Signup from './Components/signup'
+import Dashboard from './Components/Dashboard.jsx'
 import Maintenance from './Components/Maintenance'
-import Verification from './Components/Verification'
+import Verification from './Components/Verification.jsx'
 
-
+// App Component
 
 const App = () => {
   const dispatch = useDispatch();
@@ -68,3 +66,4 @@ const Main = () => (
 
 
 export default Main;
+
